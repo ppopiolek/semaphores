@@ -3,11 +3,11 @@
 ## How to use
 ```struct Buffer* buffer = createBuffer({FIFO/LIFO}, {fixed_buffer_size})``` - creates fixed sized FIFO/LIFO buffer (queue/stack)
 
-```producerTask({buffer}, {string}, {string_length})``` - 
+```producerTask({buffer}, {string})``` - writes to the buffer string of characters, each character as a seperate element
 
-```consumerTask(buffer3, 1)``` -
+```consumerTask({buffer}, {number})``` - reads from the buffer {_quantity_} elements
 
-```bufferPrint``` - 
+```bufferPrint({buffer})``` - prints current contents of the buffer
 
 
 ## Synchronization
@@ -17,7 +17,9 @@ Sempaphores are ensuring synchronization of many processes operating on the same
  - mutual exclusion
 
 ## Tests
-
+The implementation contains various tests which are placed in the main function. For running tests: 
+- compile program with ```gcc shared_buffer.c -o shared_buffer_test -lpthread -lrt```
+- ...
 
 
 
