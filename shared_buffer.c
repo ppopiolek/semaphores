@@ -1,6 +1,6 @@
 /*
- * author: Pawel Popiolek
- * compilation: gcc shared_buffer.c -o main -lpthread -lrt
+  author: Pawel Popiolek
+  compilation: gcc shared_buffer.c -o main -lpthread -lrt
  */
 
 #include <stdio.h>
@@ -9,6 +9,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <string.h>
 #define LIFO 0
 #define FIFO 1
 
@@ -130,7 +131,8 @@ void bufferPrint(struct Buffer* buffer){
 }
 
 
-int producerTask(struct Buffer* buffer, char* items, size_t n){
+int producerTask(struct Buffer* buffer, char* items){
+    size_t n = strlen(items);
     for (size_t i=0; i < n; i++){
         sem_wait(&(buffer->empty));
         sem_wait(&(buffer->mutex));
@@ -171,9 +173,9 @@ int main(int argc, char *argv[]){
         //FIFO, LIFO test:
         case 1:
         printf("FIFO test:\n");
-        producerTask(buffer1, "a", 1);
-        producerTask(buffer1, "b", 1);
-        producerTask(buffer1, "c", 1);
+        producerTask(buffer1, "a");
+        producerTask(buffer1, "b");
+        producerTask(buffer1, "c");
    
         printf("buffer:\n");
         bufferPrint(buffer1);
@@ -186,9 +188,9 @@ int main(int argc, char *argv[]){
         bufferPrint(buffer1);
 
         printf("\nLIFO test:\n");
-        producerTask(buffer2, "a", 1);
-        producerTask(buffer2, "b", 1);
-        producerTask(buffer2, "c", 1);
+        producerTask(buffer2, "a");
+        producerTask(buffer2, "b");
+        producerTask(buffer2, "c");
 
         printf("buffer:\n");
         bufferPrint(buffer2);
@@ -204,7 +206,7 @@ int main(int argc, char *argv[]){
     //producing/consuming multiple elements:
     case 2:
         printf("\nproducing multiple elements test:\n");
-        producerTask(buffer1, "abcdef", 6);
+        producerTask(buffer1, "abcdef");
         printf("buffer:\n");
         bufferPrint(buffer1);
         printf("\nconsuming multiple elements test:\n");
@@ -219,14 +221,14 @@ int main(int argc, char *argv[]){
         int pid = fork();   
 
         if (pid == 0){
-            producerTask(buffer1, "abc", 3);
+            producerTask(buffer1, "abc");
             consumerTask(buffer1, 3);
             consumerTask(buffer1, 1);
 
         } else {
             sleep(2);
             printf("proces2: ");
-            producerTask(buffer1, "a", 1);
+            producerTask(buffer1, "a");
         }
     break;
 
@@ -236,9 +238,9 @@ int main(int argc, char *argv[]){
         int pid1 = fork();   
 
         if (pid1 == 0){
-            producerTask(buffer3, "abcdefghij", 10);
+            producerTask(buffer3, "abcdefghij");
             bufferPrint(buffer3);
-            producerTask(buffer3, "k", 1);
+            producerTask(buffer3, "k");
             bufferPrint(buffer3);
 
         } else {
@@ -254,12 +256,12 @@ int main(int argc, char *argv[]){
         int pid2 = fork();   
 
         if (pid2 == 0){
-            producerTask(buffer2, "fghij", 5);
+            producerTask(buffer2, "fghij");
             printf("proces1: \n");
             bufferPrint(buffer2);
 
         } else {
-            producerTask(buffer2, "abcde", 5);
+            producerTask(buffer2, "abcde");
             printf("proces2: \n");
             bufferPrint(buffer2);
             consumerTask(buffer2, 8);
