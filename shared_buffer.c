@@ -1,6 +1,6 @@
 /*
   author: Pawel Popiolek
-  compilation: gcc shared_buffer.c -o main -lpthread -lrt
+  compilation: gcc shared_buffer.c -o shared_buffer_test -lpthread -lrt
  */
 
 #include <stdio.h>
