@@ -1,4 +1,4 @@
-# Statically imlemented FIFO/LIFO shared buffer with POSIX semaphores in C
+# Statically implemented FIFO/LIFO shared buffer with POSIX semaphores in C
 
 ## How to use
 ```struct Buffer* buffer = createBuffer({FIFO/LIFO}, {fixed_buffer_size})``` - creates fixed sized FIFO/LIFO buffer (queue/stack)
